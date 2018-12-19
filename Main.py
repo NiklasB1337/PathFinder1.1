@@ -9,8 +9,8 @@ root = Tk()
 w = 400/20
 h = 400/20
 # Erstellen des Starts und des Ziels
-start = (2,2)
-end = (2, 4)
+start = (1,1)
+end = (6, 9)
 
 # Erstellen des Spielfelds
 ## google, wie 2 Dim. Arrays verwaltet werden
@@ -62,20 +62,6 @@ a2 = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
 
-for i in range(0,19):
-    for j in range(0,19):
-        if a[i][j] == 2:
-            x = i
-            y = j
-            start = (x,y)
-
-        elif a[i][j] == 3:
-            x = i
-            y = j
-            end = (x,y)
-
-start = (1,1)
-end = (9,6)
 
 
 
@@ -155,7 +141,7 @@ d1 = OptionMenu(rightframe, choices,"A-Star", "dijkstra", "test2")
 
 # Methode, um die aktuelle Auswahl zu erhalten
 def optionReturn():
-    print(typ)
+
     return "A-Star"
 
 
