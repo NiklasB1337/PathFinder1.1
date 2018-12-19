@@ -103,3 +103,10 @@ class Graph():
 
                 # Add the child to the open list
                 open_list.append(child)
+
+
+
+
+
+
+
