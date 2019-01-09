@@ -9,8 +9,8 @@ root = Tk()
 w = 400/20
 h = 400/20
 # Erstellen des Starts und des Ziels
-start = (1,1)
-end = (6, 9)
+start = (2,2)
+end = (2, 4)
 
 # Erstellen des Spielfelds
 ## google, wie 2 Dim. Arrays verwaltet werden
@@ -62,6 +62,20 @@ a2 = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
      [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
 
+for i in range(0,19):
+    for j in range(0,19):
+        if a[i][j] == 2:
+            x = i
+            y = j
+            start = (x,y)
+
+        elif a[i][j] == 3:
+            x = i
+            y = j
+            end = (x,y)
+
+start = (1,1)
+end = (9,6)
 
 
 
@@ -79,6 +93,7 @@ rightframe.pack(side=RIGHT)
 
 # Methode für den Knopf, um zu reagieren
 def startSearch():
+    b1['state'] = 'disabled'
     type = optionReturn()
     print(type)
 
@@ -90,18 +105,27 @@ def startSearch():
         print("B")
         dijkstra()
 
+    elif type == "BFSearch":
+        bfsearch()
+        print("C")
+
+
+
 # Feld reinigen
 def clearField():
     for i in range(0,20):
         for j in range(0, 20):
             a[i][j] = a2[i][j]
-    ## Test für a: print(a)
+    ## test für a: print(a)
     drawCanvas()
+    b1['state'] = 'normal'
 
 # A-Star Algorithmus aufrufen
 def aStar():
     search = Graph()
     path = search.astar(a, start, end)
+
+    print("A* Search start")
 
     for i in range(0, len(path)):
         x = path[i][0]
@@ -116,46 +140,61 @@ def aStar():
 # Dijkstra aufrufen
 def dijkstra():
     search = Graph()
-    print("Dijkstra start")
     path = search.dijkstra(a,start,end)
 
+    print("Dijkstra start")
+
+    drawCanvas()
+    print(path)
+
+#Call Breadth First
+def bfsearch():
+    b1.setEnabled(False)
+    search = Graph()
+    path = search.bfsearch(a, start, end)
+
+    print("Breadth First Search start")
+    drawCanvas()
     print(path)
 
 
+
 # Button hinzufügen
-b1 = Button(rightframe, text="Search", fg="Black", command=startSearch)
+b1 = Button(rightframe, text="Search", fg="Black", command=startSearch, state='normal')
 b2 = Button(rightframe, text="Clear Field", fg="Black", command=clearField)
+b3 = Button(rightframe, text="End application", fg="Black", command=root.destroy)
 
-# Dja
-b1.pack()
-b2.pack()
+#Adding the Drop Down
+variable = StringVar(root)
+# default value
+variable.set("A-Star")
 
+d1 = OptionMenu(rightframe, variable,"A-Star", "dijkstra", "breadth first")
 
-
-# Drop Down hinzufügen
-choices = StringVar(root)
-choices.set("A-Star")
-
-
-d1 = OptionMenu(rightframe, choices,"A-Star", "dijkstra", "test2")
 
 # Methode, um die aktuelle Auswahl zu erhalten
 def optionReturn():
+    print("value is: ", variable.get())
+    return variable.get()
 
-    return "A-Star"
-
+# Include forms on the canvas (rightframe)
+b1.pack()
+b2.pack()
 
 d1.pack()
 
+b3.pack()
 
-# Maus hinzufügen
+
+
+# Add the mouse event
 def leftClick(event):
     print("Left")
     x, y = event.x, event.y
     print('{}, {}'.format(x,y))
     manageWall(x,y)
 
-    # update der GUI
+    # update the GUI
     field.update()
     drawCanvas()
 
@@ -179,7 +218,7 @@ def rightClick(event):
     field.update()
     drawCanvas()
 
-# callback für Aktionen
+# callback for actions
 def callback(event):
     print("mousecursor at" + event.x + " / " + event.y)
 
