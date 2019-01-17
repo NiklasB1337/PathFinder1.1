@@ -1,6 +1,3 @@
-# Graph Class
-
-from itertools import product
 
 from queue import Queue, PriorityQueue
 
@@ -19,6 +16,16 @@ class Node():
 
 class Graph():
 
+    def neighbors(node):
+        dirs = [[1,0], [0,1], [-1,0], [0,-1]]
+        result = []
+        for dir in dirs:
+            neighbor = [node[0] + dir[0], node[1] + dir[1]]
+            if 0 <= neighbor[0] < 20 and 0 <= neighbor[1] < 10:
+                result.append(neighbor)
+                return result
+
+    # Astar
     def astar(self, maze, start, end):
 
         """Returns a list of tuples as a path from the given start to the given end in the given maze"""
@@ -29,17 +36,17 @@ class Graph():
         end_node = Node(None, end)
         end_node.g = end_node.h = end_node.f = 0
 
-        # Initialize both open and closed list
+        # Initialize open and closed list
         open_list = []
         closed_list = []
 
         # Add the start node
         open_list.append(start_node)
 
-        # Loop until you find the end
+        # Loop until the end is found
         while len(open_list) > 0:
 
-            # Get the current node
+            # get the current node
             current_node = open_list[0]
             current_index = 0
             for index, item in enumerate(open_list):
@@ -47,11 +54,11 @@ class Graph():
                     current_node = item
                     current_index = index
 
-            # Pop current off open list, add to closed list
+            # pop current off open list, add to closed list
             open_list.pop(current_index)
             closed_list.append(current_node)
 
-            # Found the goal
+            # finding the goal
             if current_node == end_node:
                 path = []
                 current = current_node
@@ -60,51 +67,51 @@ class Graph():
                     current = current.parent
                 return path[::-1]  # Return reversed path
 
-            # Generate children
+            # generate children
             children = []
-            for new_position in [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1),
-                                 (1, 1)]:  # Adjacent squares
+            for new_position in [(0, -1), (0, 1), (-1, 0), (1, 0)]:  # Adjacent squares
 
-                # Get node position
+                # get node position
                 node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
 
-                # Make sure within range
+                # make sure the node is within range
                 if node_position[0] > (len(maze) - 1) or node_position[0] < 0 or node_position[1] > (
                         len(maze[len(maze) - 1]) - 1) or node_position[1] < 0:
                     continue
 
-                # Make sure walkable terrain
+                # make sure the terrain is walkable
                 if maze[node_position[0]][node_position[1]] != 0:
                     continue
 
-                # Create new node
+                # create new node
                 new_node = Node(current_node, node_position)
 
                 # Append
                 children.append(new_node)
 
-            # Loop through children
+            # loop through children
             for child in children:
 
-                # Child is on the closed list
+                # child is on the closed list
                 for closed_child in closed_list:
                     if child == closed_child:
                         continue
 
-                # Create the f, g, and h values
+                #cCreate the f, g, and h values
                 child.g = current_node.g + 1
                 child.h = ((child.position[0] - end_node.position[0]) ** 2) + (
                             (child.position[1] - end_node.position[1]) ** 2)
                 child.f = child.g + child.h
 
-                # Child is already in the open list
+                # child is already in the open list
                 for open_node in open_list:
                     if child == open_node and child.g > open_node.g:
                         continue
 
-                # Add the child to the open list
+                # add the child to the open list
                 open_list.append(child)
 
+    # Dijkstra
     def dijkstra(self, maze, start, end):
         frontier = PriorityQueue()
         frontier.put(start, 0)
@@ -127,9 +134,7 @@ class Graph():
                     frontier.put(next, priority)
                     came_from[next] = current
 
-
-
-
+    # breadth first
     def bfsearch(self, maze, start, end):
         frontier = Queue()
         frontier.put(start)
@@ -150,7 +155,3 @@ class Graph():
                     came_from[next] = True
 
         return came_from
-
-
-
-

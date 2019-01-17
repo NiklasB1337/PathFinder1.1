@@ -1,97 +1,57 @@
-# hier kommt die GUI rein
+
 from tkinter import *
 from Search import Graph
 
-
-# Erstellung des Roots
 root = Tk()
-# Größe der Felder
+# Size of the field
 w = 400/20
 h = 400/20
-# Erstellen des Starts und des Ziels
-start = (2,2)
-end = (2, 4)
 
-# Erstellen des Spielfelds
-## google, wie 2 Dim. Arrays verwaltet werden
-# 0 = nichts
-# 1 = wall
+# Set start and goal
+start = (1,1)
+end = (18, 18)
+
+# Field description
+# 0 = nothing
+# 1 = constructed wall
 # 2 = start
 # 3 = end
-# 4 = Weg von Start zum Ziel
+# 4 = pathfinding way
+# 5 = surrounding Wall
 
-a = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
-
-a2 = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
-
-for i in range(0,19):
-    for j in range(0,19):
-        if a[i][j] == 2:
-            x = i
-            y = j
-            start = (x,y)
-
-        elif a[i][j] == 3:
-            x = i
-            y = j
-            end = (x,y)
-
-start = (1,1)
-end = (9,6)
+# Main field
+a  = [[5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+     [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5],
+     [5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]]
 
 
-
-# GUI für Algorithmus erstellen
+# Define the overall guy
 field = Canvas(root, width=400, height=400)
 field.pack(side=LEFT)
 
-
-
-# Aufteilung der Oberfläche in 2 Bereiche links und Rechts
+# Separate the guy
 rightframe = Frame(root)
 rightframe.pack(side=RIGHT)
 
 
-
-# Methode für den Knopf, um zu reagieren
+# Defines which algorithm is executed
 def startSearch():
     b1['state'] = 'disabled'
     type = optionReturn()
@@ -109,23 +69,52 @@ def startSearch():
         bfsearch()
         print("C")
 
-
-
-# Feld reinigen
+# Clear Field except wall
 def clearField():
-    for i in range(0,20):
-        for j in range(0, 20):
-            a[i][j] = a2[i][j]
-    ## test für a: print(a)
+    for i in range(1,19):
+        for j in range(1, 19):
+                a[i][j] = 0
     drawCanvas()
     b1['state'] = 'normal'
 
-# A-Star Algorithmus aufrufen
+#clear only algorithm, leave constructed walls
+def partialClear():
+    for i in range(1,19):
+        for j in range(1, 19):
+            if a[i][j] == 4:
+                a[i][j] = 0
+    drawCanvas()
+    b1['state'] = 'normal'
+
+# A-Star
 def aStar():
+    print("A* Search start")
     search = Graph()
     path = search.astar(a, start, end)
 
-    print("A* Search start")
+    drawCanvas()
+    print("Test")
+
+    if not path:
+        print("path is empty")
+    else:
+
+        for i in range(0, len(path)):
+            x = path[i][0]
+            y = path[i][1]
+            print(x)
+            print(y)
+            addWay(x,y)
+
+        drawCanvas()
+        print(path)
+
+# Dijkstra
+def dijkstra():
+    search = Graph()
+    path = search.dijkstra2(a,start,end)
+
+    print("Dijkstra start")
 
     for i in range(0, len(path)):
         x = path[i][0]
@@ -137,57 +126,53 @@ def aStar():
     drawCanvas()
     print(path)
 
-# Dijkstra aufrufen
-def dijkstra():
-    search = Graph()
-    path = search.dijkstra(a,start,end)
-
-    print("Dijkstra start")
-
-    drawCanvas()
-    print(path)
-
-#Call Breadth First
+#Breadth First
 def bfsearch():
     b1.setEnabled(False)
     search = Graph()
     path = search.bfsearch(a, start, end)
 
     print("Breadth First Search start")
+
+    for i in range(0, len(path)):
+        x = path[i][0]
+        y = path[i][1]
+        print(x)
+        print(y)
+        addWay(x, y)
+
     drawCanvas()
     print(path)
 
 
 
-# Button hinzufügen
+#add buttons
 b1 = Button(rightframe, text="Search", fg="Black", command=startSearch, state='normal')
 b2 = Button(rightframe, text="Clear Field", fg="Black", command=clearField)
+b4 = Button(rightframe, text="Partial Clear", fg="Black", command=partialClear)
 b3 = Button(rightframe, text="End application", fg="Black", command=root.destroy)
 
-#Adding the Drop Down
+
+#adding the drop-down
 variable = StringVar(root)
 # default value
 variable.set("A-Star")
-
 d1 = OptionMenu(rightframe, variable,"A-Star", "dijkstra", "breadth first")
 
 
-# Methode, um die aktuelle Auswahl zu erhalten
+#returning the highlighted choice
 def optionReturn():
     print("value is: ", variable.get())
     return variable.get()
 
-# Include forms on the canvas (rightframe)
+# include forms on the canvas (rightframe)
 b1.pack()
 b2.pack()
-
+b4.pack()
 d1.pack()
-
 b3.pack()
 
-
-
-# Add the mouse event
+# add the mouse events
 def leftClick(event):
     print("Left")
     x, y = event.x, event.y
@@ -214,7 +199,7 @@ def rightClick(event):
     end = (x, y)
     print(end)
 
-    # Update der GUI
+# update guy
     field.update()
     drawCanvas()
 
@@ -227,7 +212,7 @@ def motion(event):
     print('{}, {}'.format(x,y))
 
 
-# Einfügefunktion im Array
+# include constructed walls into field
 def manageWall(x,y):
     x = int(x / 20)
     y = int(y / 20)
@@ -236,11 +221,12 @@ def manageWall(x,y):
         a[x][y] = 1
     elif a[x][y] == 1:
         a[x][y] = 0
+# can also change the path to wall
+    elif a[x][y] == 4:
+        a[x][y] = 1
 
-    # Test für die Ausgabe: output()
 
-
-# Überprüfung der Änderung durch eine Ausgabe
+# check changes through output
 def output():
     for i in range(0, 20):
         l = ""
@@ -250,57 +236,44 @@ def output():
         print(l)
 
 
-# Löschfunktion im Array
+# function to delete
 def delete(x,y):
     x = x / 20
     y = y / 20
 
-# Zeichnen der Canvas
-# Das ist falsch rum und das Feld passt nicht ganz!!!!
+# draw canvas
 def drawCanvas():
-
     for y in range(0, 20):
         for x in range(0, 20):
             if a[x][y] == 4:
                 field.create_rectangle(w * x, h * y, w * x + 20, h * y + 20, fill="lime")
-            if a[x][y] == 3:
+            elif a[x][y] == 3:
                 field.create_rectangle(w * x, h * y, w * x + 20, h * y + 20, fill="green")
-            if a[x][y] == 2:
+            elif a[x][y] == 2:
                 field.create_rectangle(w * x, h * y, w * x + 20, h * y + 20, fill="green")
-            if a[x][y] == 1:
+            elif a[x][y] == 1:
                 field.create_rectangle(w * x, h * y, w * x + 20, h * y + 20, fill="black")
-            if a[x][y] == 0:
+            elif a[x][y] == 0:
                 field.create_rectangle(w * x, h * y, w * x + 20, h * y + 20, fill="grey")
+            elif a[x][y] == 5:
+                field.create_rectangle(w * x, h * y, w * x + 20, h * y + 20, fill="black")
 
-
-
+# adding start- and endpoint
     x = start[0]
     y = start[1]
-
     field.create_rectangle(w * x, h * y, w * x + 20, h * y + 20, fill="green")
 
     x2 = end[0]
     y2 = end[1]
-
     field.create_rectangle(w * x2, h * y2, w * x2 + 20, h * y2 + 20, fill="green")
-
-
-# Update a
 
 # Add a way
 def addWay(x,y):
-
     a[x][y] = 4
-
-
-
-# Hauptcode
 
 field.bind("<Button-1>", leftClick)
 field.bind("<Button-2>", middleClick)
 field.bind("<Button-3>", rightClick)
-
-#field.bind("<Motion>", motion)
 
 drawCanvas()
 root.mainloop()
