@@ -9,7 +9,8 @@ h = 400/20
 
 # Set start and goal
 start = (1,1)
-end = (18, 18)
+#end = (18, 18)
+end = (15, 15)
 
 # Field description
 # 0 = nothing
@@ -199,7 +200,7 @@ def rightClick(event):
     end = (x, y)
     print(end)
 
-# update guy
+    # update guy
     field.update()
     drawCanvas()
 
